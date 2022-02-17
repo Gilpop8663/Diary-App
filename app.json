@@ -1,0 +1,11 @@
+{
+  "expo": {
+    "name": "gil-diary",
+    "slug": "gil-diary",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  },
+  "name": "gil-diary"
+}
