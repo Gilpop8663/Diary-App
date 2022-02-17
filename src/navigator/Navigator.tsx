@@ -1,9 +1,7 @@
 import React from 'react';
 import Home from '../screens/Home';
 import Write from '../screens/Write';
-const {
-  createNativeStackNavigator,
-} = require('@react-navigation/native-stack');
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 const Tabs = createNativeStackNavigator();
 

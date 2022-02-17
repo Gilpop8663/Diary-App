@@ -4,7 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 import colors from '../styles/colors';
 const Container = styled.View`
   flex: 1;
-  padding: 100px 50px 0px 50px;
+  padding: 100px 30px 0px 30px;
   background-color: ${colors.bgColor};
 `;
 
@@ -25,7 +25,7 @@ const Btn = styled.TouchableOpacity`
   background-color: ${colors.btnColor};
   border-radius: 40px;
   elevation: 5;
-  box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.3);
+  box-shadow: 1px 1px 3px rgba(41, 30, 95, 0.2);
 `;
 
 export default function Home({ navigation: { navigate } }) {
