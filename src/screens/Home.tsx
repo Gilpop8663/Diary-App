@@ -1,7 +1,10 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components/native';
 import { Ionicons } from '@expo/vector-icons';
 import colors from '../styles/colors';
+import { FlatList, LayoutAnimation, TouchableOpacity } from 'react-native';
+import { useDB } from '../hooks/useDB';
+import { feelingSchemaProps } from '../utils/interface';
 const Container = styled.View`
   flex: 1;
   padding: 100px 30px 0px 30px;
@@ -28,10 +31,60 @@ const Btn = styled.TouchableOpacity`
   box-shadow: 1px 1px 3px rgba(41, 30, 95, 0.2);
 `;
 
+const Record = styled.View`
+  background-color: ${colors.cardColor};
+  flex-direction: row;
+  align-items: center;
+  padding: 10px 20px;
+  border-radius: 10px;
+`;
+
+const Emotion = styled.Text`
+  font-size: 24px;
+  margin-right: 10px;
+`;
+const Message = styled.Text`
+  font-size: 18px;
+`;
+const Separator = styled.View`
+  height: 10px;
+`;
+
 export default function Home({ navigation: { navigate } }: any) {
+  const realm: any = useDB();
+  const [feelings, setFeelings] = useState<feelingSchemaProps | any>([]);
+  useEffect(() => {
+    feelings.addListener((feelings, changes) => {
+      LayoutAnimation.spring();
+      setFeelings(feelings.sorted('_id', true));
+    });
+    return () => {
+      feelings.removeAllListeners();
+    };
+  }, []);
+  const onPress = (id: number) => {
+    realm.write(() => {
+      const feeling = realm.objectForPrimaryKey('Feelings', id);
+      realm.delete(feeling);
+    });
+  };
   return (
     <Container>
       <Title>My journal</Title>
+      <FlatList
+        data={feelings}
+        contentContainerStyle={{ paddingVertical: 10 }}
+        ItemSeparatorComponent={Separator}
+        keyExtractor={(feelings) => feelings._id + ''}
+        renderItem={({ item }) => (
+          <TouchableOpacity onPress={() => onPress(item._id)}>
+            <Record>
+              <Emotion>{item.emotion}</Emotion>
+              <Message>{item.message}</Message>
+            </Record>
+          </TouchableOpacity>
+        )}
+      />
       <Btn onPress={() => navigate('Write')}>
         <Ionicons name="add" color="white" size={40} />
       </Btn>
