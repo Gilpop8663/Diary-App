@@ -5,8 +5,10 @@ import colors from '../styles/colors';
 import { FlatList, LayoutAnimation, TouchableOpacity } from 'react-native';
 import { useDB } from '../hooks/useDB';
 import { feelingSchemaProps } from '../utils/interface';
+import { AdMobBanner } from 'expo-ads-admob';
 const Container = styled.View`
   flex: 1;
+  align-items: center;
   padding: 100px 30px 0px 30px;
   background-color: ${colors.bgColor};
 `;
@@ -15,6 +17,7 @@ const Title = styled.Text`
   color: ${colors.textColor};
   font-size: 38px;
   margin-bottom: 100px;
+  width: 100%;
 `;
 
 const Btn = styled.TouchableOpacity`
@@ -71,7 +74,12 @@ export default function Home({ navigation: { navigate } }: any) {
   return (
     <Container>
       <Title>My journal</Title>
+      <AdMobBanner
+        bannerSize="fullBanner"
+        adUnitID="ca-app-pub-3940256099942544/6300978111"
+      />
       <FlatList
+        style={{ marginVertical: 50, width: '100%' }}
         data={feelings}
         contentContainerStyle={{ paddingVertical: 10 }}
         ItemSeparatorComponent={Separator}

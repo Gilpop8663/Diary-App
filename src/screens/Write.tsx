@@ -1,3 +1,4 @@
+import { AdMobRewarded } from 'expo-ads-admob';
 import React, { useState } from 'react';
 import { Alert } from 'react-native';
 import styled from 'styled-components/native';
@@ -72,7 +73,7 @@ export default function Write({ navigaton: { goBack } }: any) {
   const onEmotionPress = (emotion: string) => {
     setEmotion(emotion);
   };
-  const onSubmit = () => {
+  const onSubmit = async () => {
     if (selectedEmotion === '' || feelings === '') {
       return Alert.alert('Please complete form.');
     }
@@ -83,7 +84,10 @@ export default function Write({ navigaton: { goBack } }: any) {
         message: feelings,
       });
     });
-    goBack();
+    await AdMobRewarded.setAdUnitID('ca-app-pub-3940256099942544/5224354917'); // Test ID, Replace with your-admob-unit-id
+    await AdMobRewarded.requestAdAsync();
+    await AdMobRewarded.showAdAsync();
+    // goBack();
   };
   console.log(selectedEmotion, feelings);
   return (
