@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { createContext, useState } from 'react';
 import Realm from 'realm';
 import { NavigationContainer } from '@react-navigation/native';
 import Navigator from './src/navigator/Navigator';
 import AppLoading from 'expo-app-loading';
+import { DBContext } from './src/hooks/useDB';
+import { feelingSchemaProps } from './src/utils/interface';
 
 const FeelingSchema = {
   name: 'Feeling',
@@ -16,13 +18,13 @@ const FeelingSchema = {
 
 export default function App() {
   const [ready, setReady] = useState(false);
+  const [realm, setRealm] = useState<feelingSchemaProps | any>({});
   const startLoading = async () => {
-    const realm = await Realm.open({
+    const connection: Realm = await Realm.open({
       path: 'gilDiaryDB',
       schema: [FeelingSchema],
     });
-    console.log(realm);
-    return console.log('hi');
+    setRealm(connection);
   };
   const onFinish = () => setReady(true);
   if (!ready) {
@@ -35,8 +37,10 @@ export default function App() {
     );
   }
   return (
-    <NavigationContainer>
-      <Navigator />
-    </NavigationContainer>
+    <DBContext.Provider value={realm}>
+      <NavigationContainer>
+        <Navigator />
+      </NavigationContainer>
+    </DBContext.Provider>
   );
 }

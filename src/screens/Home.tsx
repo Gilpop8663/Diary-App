@@ -24,11 +24,11 @@ const Btn = styled.TouchableOpacity`
   align-items: center;
   background-color: ${colors.btnColor};
   border-radius: 40px;
-  elevation: 5;
+  z-index: 5;
   box-shadow: 1px 1px 3px rgba(41, 30, 95, 0.2);
 `;
 
-export default function Home({ navigation: { navigate } }) {
+export default function Home({ navigation: { navigate } }: any) {
   return (
     <Container>
       <Title>My journal</Title>

@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { Alert } from 'react-native';
 import styled from 'styled-components/native';
+import { useDB } from '../hooks/useDB';
 import colors from '../styles/colors';
+import { feelingSchemaProps } from '../utils/interface';
 
 const Container = styled.View`
   flex: 1;
@@ -60,7 +62,8 @@ const EmotionText = styled.Text``;
 
 const emotions = ['😀', '😷', '😍', '🙄', '😥', '🤐', '😡'];
 
-export default function Write() {
+export default function Write({ navigaton: { goBack } }: any) {
+  const realm: feelingSchemaProps | any = useDB();
   const [selectedEmotion, setEmotion] = useState('');
   const [feelings, setFeelings] = useState('');
   const onChangeText = (text: string) => {
@@ -73,6 +76,14 @@ export default function Write() {
     if (selectedEmotion === '' || feelings === '') {
       return Alert.alert('Please complete form.');
     }
+    realm.write(() => {
+      realm.create('Feeling', {
+        _id: Date.now(),
+        emotion: selectedEmotion,
+        message: feelings,
+      });
+    });
+    goBack();
   };
   console.log(selectedEmotion, feelings);
   return (
